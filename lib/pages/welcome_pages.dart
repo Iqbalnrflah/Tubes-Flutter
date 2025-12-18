@@ -1,89 +1,70 @@
-part of 'pages.dart';
+import 'package:flutter/material.dart';
+import 'package:tubes_flutter/pages/kamar_pages.dart';
+import 'package:tubes_flutter/pages/tambah_kos_pages.dart';
+import 'tambah_kos_pages.dart';
+import 'kamar_pages.dart';
 
 class WelcomePages extends StatelessWidget {
-  const WelcomePages ({Key? key}) : super (key: key);
+  const WelcomePages({super.key});
 
-  @override 
-  Widget build(BuildContext contex) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primary,
-      body: SafeArea(bottom: false,
-      child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+      body: Stack(
         children: [
-          Image.asset('assets/image', height:333, fit: BoxFit.fill),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Welcome",
-            style: dangerTextStyle,
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Hello my name is iqbal",
-            style: whiteTextStyle.copyWith(fontSize: 28),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 51,
-          ),
-          Container(
-            height: 60,
-            width: MediaQuery.of(contex).size.width,
-            child : ElevatedButton(
-              onPressed: (){}, 
-              child: Text(
-                'Create Account', 
-                style:whiteTextStyle.copyWith(
-                  fontSize: 20, 
-                  fontWeight: FontWeight.w300, 
-                  color: primary),
-                  ), style: ElevatedButton.styleFrom(
-                    backgroundColor: secondaryColor, 
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)))
-              )
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Container(
-            height: 60,
-            width: MediaQuery.of(contex).size.width,
-            child : ElevatedButton(
-              onPressed: (){}, 
-              child: Text(
-                'Loginn', 
-                style:whiteTextStyle.copyWith(
-                  fontSize: 20, 
-                  fontWeight: FontWeight.w300, 
-                  color: secondaryColor),
-                  ), 
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primary, 
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(color: secondaryColor, width: 3),
-                      borderRadius: BorderRadius.circular(25))))),
-          SizedBox(
-            height: 30,
-          ),
-          Text(
-          'All Right Reserved @2025',
-          textAlign: TextAlign.center,
-          style: 
-          whiteTextStyle.copyWith(
-            color: secondaryColor, fontSize: 11),
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.08,
+              child: Image.asset(
+                'assets/bg_house.png',
+                repeat: ImageRepeat.repeat,
+              ),
             ),
-          SizedBox(
-            height: defaultMargin,
           ),
-        ]
-      ),),
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                const SizedBox(height: 60),
+                _kostButton(context, "CEMPAKA KOST 1"),
+                const SizedBox(height: 16),
+                _kostButton(context, "CEMPAKA KOST 2"),
+              ],
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const TambahKostPage()),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
 
+  Widget _kostButton(BuildContext context, String text) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const KamarPage()),
+        );
+      },
+      child: Container(
+        height: 55,
+        decoration: BoxDecoration(
+          color: const Color(0xFFFF6F61),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        alignment: Alignment.center,
+        child: Text(text,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
     );
   }
 }
