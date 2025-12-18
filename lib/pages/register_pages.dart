@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
-import 'register_pages.dart';
-final auth = AuthService();
 
-
-class WelcomePages extends StatefulWidget {
-  const WelcomePages({super.key});
+class RegisterPages extends StatefulWidget {
+  const RegisterPages({super.key});
 
   @override
-  State<WelcomePages> createState() => _WelcomePagesState();
+  State<RegisterPages> createState() => _RegisterPagesState();
 }
 
-class _WelcomePagesState extends State<WelcomePages> {
+class _RegisterPagesState extends State<RegisterPages> {
   final auth = AuthService();
   final emailC = TextEditingController();
   final passC = TextEditingController();
@@ -20,25 +17,17 @@ class _WelcomePagesState extends State<WelcomePages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text("Register")),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("LOGIN",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 24),
-
             _input(emailC, "Email"),
             const SizedBox(height: 16),
             _input(passC, "Password", obscure: true),
 
             if (error.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child:
-                    Text(error, style: const TextStyle(color: Colors.red)),
-              ),
+              Text(error, style: const TextStyle(color: Colors.red)),
 
             const SizedBox(height: 20),
 
@@ -48,27 +37,15 @@ class _WelcomePagesState extends State<WelcomePages> {
               child: ElevatedButton(
                 onPressed: () async {
                   try {
-                    await auth.login(emailC.text, passC.text);
+                    await auth.register(emailC.text, passC.text);
+                    Navigator.pop(context);
                   } catch (e) {
-                    setState(() => error = "Login gagal");
+                    setState(() => error = "Register gagal");
                   }
                 },
-                child: const Text("Login"),
+                child: const Text("Register"),
               ),
             ),
-
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const RegisterPages(),
-                  ),
-                );
-              },
-              child: const Text("Belum punya akun? Register"),
-            ),
-            
           ],
         ),
       ),

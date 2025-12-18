@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../auth/auth_service.dart';
+
+final auth = AuthService();
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -10,13 +13,40 @@ class ProfilePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          children: const [
-            CircleAvatar(radius: 40),
-            SizedBox(height: 20),
-            TextField(decoration: InputDecoration(labelText: "Nama")),
-            TextField(decoration: InputDecoration(labelText: "Email")),
-            TextField(decoration: InputDecoration(labelText: "Password")),
-            TextField(decoration: InputDecoration(labelText: "Nomor Handphone")),
+          children: [
+            const CircleAvatar(radius: 40),
+            const SizedBox(height: 20),
+
+            const TextField(
+              decoration: InputDecoration(labelText: "Nama"),
+            ),
+            const TextField(
+              decoration: InputDecoration(labelText: "Email"),
+            ),
+            const TextField(
+              decoration: InputDecoration(labelText: "Password"),
+            ),
+            const TextField(
+              decoration: InputDecoration(labelText: "Nomor Handphone"),
+            ),
+
+            const SizedBox(height: 30),
+
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                onPressed: () async {
+                  await auth.logout();
+                  // TIDAK PERLU Navigator.pop / push
+                  // AuthWrapper otomatis pindah ke Login
+                },
+                child: const Text("Logout"),
+              ),
+            ),
           ],
         ),
       ),
