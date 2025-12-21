@@ -40,7 +40,7 @@ class _PagesState extends State<Pages> {
                 final result = await Navigator.push<KosCard>(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const TambahKosPages(),
+                    builder: (_) => const TambahKosPage(),
                   ),
                 );
 

@@ -1,47 +1,35 @@
 import 'package:flutter/material.dart';
-import '../shared/kos_shared.dart';
+import 'package:tubes_flutter/services/firestrore_service.dart';
+import '../services/firestrore_service.dart';
 
-class TambahKosPages extends StatelessWidget {
-  const TambahKosPages({super.key});
+class TambahKosPage extends StatefulWidget {
+  const TambahKosPage({super.key});
+
+  @override
+  State<TambahKosPage> createState() => _TambahKosPageState();
+}
+
+class _TambahKosPageState extends State<TambahKosPage> {
+  final namaC = TextEditingController();
+  final alamatC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final namaController = TextEditingController();
-    final hargaController = TextEditingController();
-
     return Scaffold(
-      appBar: AppBar(title: const Text("Tambah Kos Baru")),
+      appBar: AppBar(title: const Text("Tambah Kos")),
       body: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: namaController,
-              decoration: const InputDecoration(hintText: "Nama Kos"),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: hargaController,
-              decoration: const InputDecoration(
-                hintText: "Harga / bulan",
-              ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                child: const Text("Simpan Kos"),
-                onPressed: () {
-                  Navigator.pop(
-                    context,
-                    KosCard(
-                      nama: namaController.text,
-                      harga: hargaController.text,
-                    ),
-                  );
-                },
-              ),
+            TextField(controller: namaC, decoration: const InputDecoration(labelText: "Nama Kos")),
+            TextField(controller: alamatC, decoration: const InputDecoration(labelText: "Alamat")),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              child: const Text("Simpan"),
+              onPressed: () async {
+                await FirestoreService.tambahKos(namaC.text, alamatC.text);
+                Navigator.pop(context);
+              },
             ),
           ],
         ),
