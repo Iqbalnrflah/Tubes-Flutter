@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'auth/auth_wrapper.dart';
-import 'shared/theme.dart';
+import 'shared/theme_shared.dart';
 
 void main() {
   runApp(const MyApp());

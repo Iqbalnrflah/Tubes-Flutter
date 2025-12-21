@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'theme.dart';
+import 'theme_shared.dart';
 
 class KosCard extends StatelessWidget {
   final String nama;
