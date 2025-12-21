@@ -1,21 +1,9 @@
 import 'package:flutter/material.dart';
-import '../auth/auth_service.dart';
 import 'register_pages.dart';
-final auth = AuthService();
+import 'pages.dart';
 
-
-class WelcomePages extends StatefulWidget {
+class WelcomePages extends StatelessWidget {
   const WelcomePages({super.key});
-
-  @override
-  State<WelcomePages> createState() => _WelcomePagesState();
-}
-
-class _WelcomePagesState extends State<WelcomePages> {
-  final auth = AuthService();
-  final emailC = TextEditingController();
-  final passC = TextEditingController();
-  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -25,64 +13,49 @@ class _WelcomePagesState extends State<WelcomePages> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("LOGIN",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 24),
-
-            _input(emailC, "Email"),
-            const SizedBox(height: 16),
-            _input(passC, "Password", obscure: true),
-
-            if (error.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child:
-                    Text(error, style: const TextStyle(color: Colors.red)),
-              ),
-
+            const Icon(Icons.home_work, size: 90, color: Color(0xFFFF6B6B)),
             const SizedBox(height: 20),
+            const Text(
+              "Cari Kos Mudah & Cepat",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 40),
 
+            /// LOGIN
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 48,
               child: ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await auth.login(emailC.text, passC.text);
-                  } catch (e) {
-                    setState(() => error = "Login gagal");
-                  }
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFF6B6B),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const Pages()),
+                  );
                 },
-                child: const Text("Login"),
+                child: const Text("Masuk"),
               ),
             ),
 
+            const SizedBox(height: 12),
+
+            /// REGISTER
             TextButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => const RegisterPages(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const RegisterPages()),
                 );
               },
-              child: const Text("Belum punya akun? Register"),
+              child: const Text("Daftar Akun"),
             ),
-            
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _input(TextEditingController c, String hint,
-      {bool obscure = false}) {
-    return TextField(
-      controller: c,
-      obscureText: obscure,
-      decoration: InputDecoration(
-        hintText: hint,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

@@ -1,49 +1,37 @@
 import 'package:flutter/material.dart';
-import '../auth/auth_service.dart';
 
-class RegisterPages extends StatefulWidget {
+class RegisterPages extends StatelessWidget {
   const RegisterPages({super.key});
-
-  @override
-  State<RegisterPages> createState() => _RegisterPagesState();
-}
-
-class _RegisterPagesState extends State<RegisterPages> {
-  final auth = AuthService();
-  final emailC = TextEditingController();
-  final passC = TextEditingController();
-  String error = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Register")),
-      body: Padding(
+      appBar: AppBar(title: const Text("Daftar Akun")),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            _input(emailC, "Email"),
+            const Icon(Icons.person_add,
+                size: 80, color: Color(0xFFFF6B6B)),
+            const SizedBox(height: 24),
+
+            _input("Nama Lengkap"),
             const SizedBox(height: 16),
-            _input(passC, "Password", obscure: true),
+            _input("Email"),
+            const SizedBox(height: 16),
+            _input("Password", isPassword: true),
+            const SizedBox(height: 16),
+            _input("Konfirmasi Password", isPassword: true),
 
-            if (error.isNotEmpty)
-              Text(error, style: const TextStyle(color: Colors.red)),
-
-            const SizedBox(height: 20),
-
+            const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
-              height: 50,
+              height: 48,
               child: ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await auth.register(emailC.text, passC.text);
-                    Navigator.pop(context);
-                  } catch (e) {
-                    setState(() => error = "Register gagal");
-                  }
+                onPressed: () {
+                  Navigator.pop(context);
                 },
-                child: const Text("Register"),
+                child: const Text("Daftar"),
               ),
             ),
           ],
@@ -52,15 +40,10 @@ class _RegisterPagesState extends State<RegisterPages> {
     );
   }
 
-  Widget _input(TextEditingController c, String hint,
-      {bool obscure = false}) {
+  Widget _input(String hint, {bool isPassword = false}) {
     return TextField(
-      controller: c,
-      obscureText: obscure,
-      decoration: InputDecoration(
-        hintText: hint,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-      ),
+      obscureText: isPassword,
+      decoration: InputDecoration(hintText: hint),
     );
   }
 }

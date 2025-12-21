@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tubes_flutter/pages/profil_pages.dart';
-import 'welcome_pages.dart';
+import 'kamar_pages.dart';
 import 'profil_pages.dart';
 
 class Pages extends StatefulWidget {
@@ -14,8 +13,8 @@ class _PagesState extends State<Pages> {
   int index = 0;
 
   final pages = const [
-    WelcomePages(),
-    ProfilePage(),
+    KamarPages(),
+    ProfilPages(),
   ];
 
   @override
@@ -24,10 +23,19 @@ class _PagesState extends State<Pages> {
       body: pages[index],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
-        onTap: (i) => setState(() => index = i),
+        selectedItemColor: const Color(0xFFFF6B6B),
+        onTap: (value) {
+          setState(() => index = value);
+        },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Beranda',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+          ),
         ],
       ),
     );

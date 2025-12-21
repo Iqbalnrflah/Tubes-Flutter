@@ -1,46 +1,45 @@
 import 'package:flutter/material.dart';
+import '../shared/kos_card.dart';
 import 'detail_kamar_pages.dart';
 
-class KamarPage extends StatelessWidget {
-  const KamarPage({super.key});
+class KamarPages extends StatelessWidget {
+  const KamarPages({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final kamar = List.generate(14, (i) => String.fromCharCode(65 + i));
-
     return Scaffold(
-      appBar: AppBar(title: const Text("Cempaka Kost 1")),
-      body: GridView.builder(
+      appBar: AppBar(
+        title: const Text("Daftar Kos"),
+      ),
+      body: Padding(
         padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-        ),
-        itemCount: kamar.length,
-        itemBuilder: (context, i) {
-          return InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => DetailKamarPage(kamar: kamar[i]),
-                ),
-              );
-            },
-            child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: const Color(0xFFFF6F61),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                kamar[i],
-                style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
-              ),
+        child: ListView(
+          children: [
+            KosCard(
+              nama: "Kos Putra",
+              harga: "Rp 800.000 / bulan",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const DetailKamarPages(),
+                  ),
+                );
+              },
             ),
-          );
+            KosCard(
+              nama: "Kos Putri",
+              harga: "Rp 900.000 / bulan",
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(Icons.add),
+        onPressed: () {
+          // ke tambah_kos_pages.dart
         },
       ),
     );

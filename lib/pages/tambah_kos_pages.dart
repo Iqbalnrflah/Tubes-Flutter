@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
 
-class TambahKostPage extends StatelessWidget {
-  const TambahKostPage({super.key});
+class TambahKosPages extends StatelessWidget {
+  const TambahKosPages({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Tambah Kost")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      appBar: AppBar(title: const Text("Tambah Kos")),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            _input("Nama Pemilik Kost"),
-            _input("Nama Kost"),
-            _input("Jumlah Kamar"),
-            _input("Alamat Kost"),
-            _input("Harga Sewa Bulanan"),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Selesai"),
-            )
+            _input("Nama Kos"),
+            const SizedBox(height: 16),
+            _input("Alamat"),
+            const SizedBox(height: 16),
+            _input("Harga / bulan", keyboard: TextInputType.number),
+            const SizedBox(height: 16),
+            _input("Fasilitas"),
+            const SizedBox(height: 24),
+
+            SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Simpan"),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _input(String hint) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: hint,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        ),
-      ),
+  Widget _input(String hint,
+      {TextInputType keyboard = TextInputType.text}) {
+    return TextField(
+      keyboardType: keyboard,
+      decoration: InputDecoration(hintText: hint),
     );
   }
 }

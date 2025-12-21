@@ -1,23 +1,40 @@
 import 'package:flutter/material.dart';
 
-class DetailKamarPage extends StatelessWidget {
-  final String kamar;
-  const DetailKamarPage({super.key, required this.kamar});
+class DetailKamarPages extends StatelessWidget {
+  const DetailKamarPages({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Kamar $kamar")),
+      appBar: AppBar(title: const Text("Detail Kos")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          children: const [
-            TextField(decoration: InputDecoration(labelText: "Nama Penyewa")),
-            TextField(decoration: InputDecoration(labelText: "Nomor Kamar")),
-            TextField(decoration: InputDecoration(labelText: "No WhatsApp")),
-            TextField(decoration: InputDecoration(labelText: "Tanggal Masuk")),
-            SizedBox(height: 20),
-            ElevatedButton(onPressed: null, child: Text("Simpan")),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 180,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Icon(Icons.image, size: 60),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              "Kos Putra",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text("Rp 800.000 / bulan"),
+            const SizedBox(height: 16),
+            const Text(
+              "Fasilitas",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text("• AC\n• WiFi\n• Kamar mandi dalam"),
           ],
         ),
       ),
