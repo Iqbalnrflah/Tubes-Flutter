@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../shared/kos_model.dart';
+import 'package:tubes_flutter/shared/kos_shared.dart';
+import '../shared/kos_shared.dart';
 import 'kamar_pages.dart';
 import 'profil_pages.dart';
 import 'tambah_kos_pages.dart';
@@ -14,12 +15,12 @@ class Pages extends StatefulWidget {
 class _PagesState extends State<Pages> {
   int index = 0;
 
-  final List<KosModel> kosList = [
-    KosModel(nama: "Kos Putra", harga: "Rp 800.000 / bulan"),
-    KosModel(nama: "Kos Putri", harga: "Rp 900.000 / bulan"),
+  final List<KosCard> kosList = [
+    KosCard(nama: "Kos Putra", harga: "Rp 800.000 / bulan"),
+    KosCard(nama: "Kos Putri", harga: "Rp 900.000 / bulan"),
   ];
 
-  void tambahKos(KosModel kos) {
+  void tambahKos(KosCard kos) {
     setState(() {
       kosList.add(kos);
     });
@@ -36,7 +37,7 @@ class _PagesState extends State<Pages> {
           ? FloatingActionButton(
               child: const Icon(Icons.add),
               onPressed: () async {
-                final result = await Navigator.push<KosModel>(
+                final result = await Navigator.push<KosCard>(
                   context,
                   MaterialPageRoute(
                     builder: (_) => const TambahKosPages(),

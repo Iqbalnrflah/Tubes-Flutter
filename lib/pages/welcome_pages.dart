@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tubes_flutter/pages/login_pages.dart';
 import 'register_pages.dart';
-import 'pages.dart';
+import 'login_pages.dart';
 
 class WelcomePages extends StatelessWidget {
   const WelcomePages({super.key});
@@ -20,8 +21,6 @@ class WelcomePages extends StatelessWidget {
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 40),
-
-            /// LOGIN
             SizedBox(
               width: double.infinity,
               height: 48,
@@ -35,16 +34,13 @@ class WelcomePages extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => const Pages()),
+                    MaterialPageRoute(builder: (_) => const LoginPages()),
                   );
                 },
-                child: const Text("Masuk"),
+                child: const Text("Login"),
               ),
             ),
-
             const SizedBox(height: 12),
-
-            /// REGISTER
             TextButton(
               onPressed: () {
                 Navigator.push(

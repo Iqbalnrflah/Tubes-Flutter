@@ -4,19 +4,16 @@ import 'theme_shared.dart';
 class KosCard extends StatelessWidget {
   final String nama;
   final String harga;
-  final VoidCallback onTap;
 
   const KosCard({
     super.key,
     required this.nama,
     required this.harga,
-    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
