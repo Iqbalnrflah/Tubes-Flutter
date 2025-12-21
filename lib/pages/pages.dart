@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../shared/kos_model.dart';
 import 'kamar_pages.dart';
 import 'profil_pages.dart';
 import 'tambah_kos_pages.dart';
@@ -13,38 +14,45 @@ class Pages extends StatefulWidget {
 class _PagesState extends State<Pages> {
   int index = 0;
 
-  final pages = const [
-    KamarPages(),
-    ProfilPages(),
+  final List<KosModel> kosList = [
+    KosModel(nama: "Kos Putra", harga: "Rp 800.000 / bulan"),
+    KosModel(nama: "Kos Putri", harga: "Rp 900.000 / bulan"),
   ];
+
+  void tambahKos(KosModel kos) {
+    setState(() {
+      kosList.add(kos);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[index],
+      body: index == 0
+          ? KamarPages(kosList: kosList)
+          : const ProfilPages(),
 
-      // ✅ FAB SUDAH FIX & BISA DIKLIK
       floatingActionButton: index == 0
           ? FloatingActionButton(
-              backgroundColor: Theme.of(context).primaryColor,
               child: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final result = await Navigator.push<KosModel>(
                   context,
                   MaterialPageRoute(
                     builder: (_) => const TambahKosPages(),
                   ),
                 );
+
+                if (result != null) {
+                  tambahKos(result);
+                }
               },
             )
           : null,
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
-        selectedItemColor: Theme.of(context).primaryColor,
-        onTap: (value) {
-          setState(() => index = value);
-        },
+        onTap: (value) => setState(() => index = value),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),

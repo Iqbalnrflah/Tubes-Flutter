@@ -1,46 +1,52 @@
 import 'package:flutter/material.dart';
+import '../shared/kos_shared.dart';
 
 class TambahKosPages extends StatelessWidget {
   const TambahKosPages({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final namaController = TextEditingController();
+    final hargaController = TextEditingController();
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Tambah Kos")),
-      body: SingleChildScrollView(
+      appBar: AppBar(title: const Text("Tambah Kos Baru")),
+      body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            _input("Nama Kos"),
+            TextField(
+              controller: namaController,
+              decoration: const InputDecoration(hintText: "Nama Kos"),
+            ),
             const SizedBox(height: 16),
-            _input("Alamat"),
-            const SizedBox(height: 16),
-            _input("Harga / bulan", keyboard: TextInputType.number),
-            const SizedBox(height: 16),
-            _input("Fasilitas"),
+            TextField(
+              controller: hargaController,
+              decoration: const InputDecoration(
+                hintText: "Harga / bulan",
+              ),
+            ),
             const SizedBox(height: 24),
 
             SizedBox(
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
+                child: const Text("Simpan Kos"),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(
+                    context,
+                    KosCard(
+                      nama: namaController.text,
+                      harga: hargaController.text,
+                    ),
+                  );
                 },
-                child: const Text("Simpan"),
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _input(String hint,
-      {TextInputType keyboard = TextInputType.text}) {
-    return TextField(
-      keyboardType: keyboard,
-      decoration: InputDecoration(hintText: hint),
     );
   }
 }

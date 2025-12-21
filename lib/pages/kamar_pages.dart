@@ -3,44 +3,25 @@ import '../shared/kos_shared.dart';
 import 'detail_kamar_pages.dart';
 
 class KamarPages extends StatelessWidget {
-  const KamarPages({super.key});
+  final List<KosCard> kosList;
+
+  const KamarPages({super.key, required this.kosList});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Daftar Kos"),
-      ),
-      body: Padding(
+      appBar: AppBar(title: const Text("Daftar Kos")),
+      body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            KosCard(
-              nama: "Kos Putra",
-              harga: "Rp 800.000 / bulan",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const DetailKamarPages(),
-                  ),
-                );
-              },
-            ),
-            KosCard(
-              nama: "Kos Putri",
-              harga: "Rp 900.000 / bulan",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const DetailKamarPages(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+        itemCount: kosList.length,
+        itemBuilder: (context, index) {
+          final kos = kosList[index];
+          return KosCard(
+            nama: kos.nama,
+            harga: kos.harga,
+            
+          );
+        },
       ),
     );
   }
