@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../shared/theme.dart';
+import '../shared/theme_shared.dart';
 import '../pages/welcome_pages.dart';
 
 class ProfilPages extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../shared/kos_card.dart';
+import '../shared/kos_shared.dart';
 import 'detail_kamar_pages.dart';
 
 class KamarPages extends StatelessWidget {
