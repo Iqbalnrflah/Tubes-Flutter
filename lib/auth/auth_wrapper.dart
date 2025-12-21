@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tubes_flutter/pages/pages.dart';
 import '../pages/login_pages.dart';
-import '../pages/home_pages.dart';
+import '../pages/pages.dart';
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
@@ -18,7 +19,7 @@ class AuthWrapper extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const HomePages(); // SUDAH LOGIN
+          return const Pages(); // SUDAH LOGIN
         }
 
         return const LoginPages(); // BELUM LOGIN
