@@ -30,17 +30,17 @@ class KamarPages extends StatelessWidget {
             KosCard(
               nama: "Kos Putri",
               harga: "Rp 900.000 / bulan",
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const DetailKamarPages(),
+                  ),
+                );
+              },
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(Icons.add),
-        onPressed: () {
-          // ke tambah_kos_pages.dart
-        },
       ),
     );
   }

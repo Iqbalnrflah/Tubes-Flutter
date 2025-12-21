@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'kamar_pages.dart';
 import 'profil_pages.dart';
+import 'tambah_kos_pages.dart';
 
 class Pages extends StatefulWidget {
   const Pages({super.key});
@@ -21,16 +22,33 @@ class _PagesState extends State<Pages> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[index],
+
+      // ✅ FAB SUDAH FIX & BISA DIKLIK
+      floatingActionButton: index == 0
+          ? FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
+              child: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const TambahKosPages(),
+                  ),
+                );
+              },
+            )
+          : null,
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
-        selectedItemColor: const Color(0xFFFF6B6B),
+        selectedItemColor: Theme.of(context).primaryColor,
         onTap: (value) {
           setState(() => index = value);
         },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Beranda',
+            label: 'Kos',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
