@@ -18,7 +18,6 @@ class _DashboardPageState extends State<DashboardPage> {
   final pages = [
     const KosPage(),
     const PembayaranPage(),
-    HistoryPage(),
     const Profil(),
   ];
 
@@ -54,10 +53,6 @@ class _DashboardPageState extends State<DashboardPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.payments),
             label: 'Bayar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Riwayat',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
