@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../kos/kos-page.dart';
-import '../kamar/kamar-page.dart';
-import '../penghuni/penghuni-page.dart';
+import '../Profil/Profil.dart';
 import '../pembayaran/pembayaran-page.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -16,7 +15,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final pages = const [
     KosPage(),
-    PenghuniPage(),
+    Profil(),
     PembayaranPage(),
   ];
 
@@ -25,9 +24,9 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       body: pages[index],
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // WAJIB supaya warna muncul
+        type: BottomNavigationBarType.fixed,
         currentIndex: index,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.orange,
         onTap: (i) => setState(() => index = i),
@@ -37,17 +36,18 @@ class _DashboardPageState extends State<DashboardPage> {
             label: 'Kos',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.meeting_room),
-            label: 'Kamar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Penghuni',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.payments),
             label: 'Bayar',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'Riwayat',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Profil',
+          ),
+          
         ],
       ),
     );
