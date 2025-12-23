@@ -26,8 +26,6 @@ class PembayaranPage extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             children: snapshot.data!.docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
-
-              // Ambil tanggal masuk
               final Timestamp ts = data['tanggal_masuk'] as Timestamp;
               final tanggal = ts.toDate();
               final formattedTanggal =

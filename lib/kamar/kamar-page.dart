@@ -55,9 +55,6 @@ class KamarPage extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    /// =========================
-                    /// KAMAR KOSONG → ISI PENYEWA
-                    /// =========================
                     if (data['status'] == 'Kosong') {
                       Navigator.push(
                         context,
@@ -68,10 +65,6 @@ class KamarPage extends StatelessWidget {
                         ),
                       );
                     }
-
-                    /// =========================
-                    /// KAMAR TERISI → CHECKOUT
-                    /// =========================
                     else {
                       showDialog(
                         context: context,

@@ -4,8 +4,6 @@ class PembayaranService {
   static Future<void> generateTagihanBulanan() async {
     final now = DateTime.now();
     final bulanKey = '${now.day}-${now.month}-${now.year}';
-
-    // ambil semua kamar terisi
     final kamarSnapshot = await FirebaseFirestore.instance
         .collection('kamar')
         .where('status', isEqualTo: 'Terisi')
@@ -13,8 +11,6 @@ class PembayaranService {
 
     for (var kamar in kamarSnapshot.docs) {
       final data = kamar.data();
-
-      // cek apakah tagihan bulan ini sudah ada
       final tagihan = await FirebaseFirestore.instance
           .collection('pembayaran')
           .where('kamar_id', isEqualTo: kamar.id)

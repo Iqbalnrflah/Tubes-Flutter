@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../dashboard/dashboard.dart'; // pastikan import sesuai
 
 class LoginPage extends StatelessWidget {
-  final VoidCallback toggleTheme; // terima toggleTheme dari MyApp
+  final VoidCallback toggleTheme;
 
   const LoginPage({super.key, required this.toggleTheme});
 
@@ -35,10 +34,8 @@ class LoginPage extends StatelessWidget {
                     email: emailC.text.trim(),
                     password: passC.text.trim(),
                   );
-                  // login sukses, pindah ke dashboard
                   Navigator.pushReplacementNamed(context, '/dashboard');
                 } catch (e) {
-                  // tampilkan error jika login gagal
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Login gagal: $e')),
                   );

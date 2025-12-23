@@ -24,10 +24,6 @@ class _IsiPenyewaPageState extends State<IsiPenyewaPage> {
         telpC.text.isEmpty) return;
 
     final fs = FirebaseFirestore.instance;
-
-    // ==========================
-    // AMBIL DATA KAMAR
-    // ==========================
     final kamarRef = fs.collection('kamar').doc(widget.kamarId);
     final kamarSnap = await kamarRef.get();
     if (!kamarSnap.exists) return;
@@ -36,24 +32,12 @@ class _IsiPenyewaPageState extends State<IsiPenyewaPage> {
     final int harga = kamar['harga'];
     final String nomorKamar = kamar['nomor'];
     final String kosId = kamar['kos_id'];
-
-    // ==========================
-    // AMBIL DATA KOS
-    // ==========================
     final kosSnap = await fs.collection('kos').doc(kosId).get();
     final String namaKos = kosSnap.exists ? kosSnap['nama'] : '-';
-
-    // ==========================
-    // WAKTU
-    // ==========================
     final Timestamp tanggalMasuk = Timestamp.now();
     final DateTime now = DateTime.now();
     final String bulan = '${now.month.toString().padLeft(2, '0')}-${now.year}';
     final Timestamp tanggalTagihan = Timestamp.fromDate(now);
-
-    // ==========================
-    // UPDATE KAMAR
-    // ==========================
     await kamarRef.update({
       'status': 'Terisi',
       'tanggal_masuk': tanggalMasuk,
@@ -63,10 +47,6 @@ class _IsiPenyewaPageState extends State<IsiPenyewaPage> {
         'telp': telpC.text,
       }
     });
-
-    // ==========================
-    // BUAT PEMBAYARAN (LENGKAP)
-    // ==========================
     await fs.collection('pembayaran').add({
       'kos_id': kosId,
       'nama_kos': namaKos,

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tubes_flutter/auth/register_page.dart';
-import 'service/pref-service.dart';
-import 'service/session-service.dart';
-import 'routes.dart';
 import 'dashboard/dashboard.dart';
 import 'auth/login_page.dart';
 

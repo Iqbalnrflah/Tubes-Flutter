@@ -80,10 +80,7 @@ class _PenghuniPageState extends State<Profil> {
                 )
               ],
             ),
-
             const SizedBox(height: 25),
-
-            // NAMA
             TextField(
               controller: namaC,
               decoration: const InputDecoration(
@@ -91,10 +88,7 @@ class _PenghuniPageState extends State<Profil> {
                 border: OutlineInputBorder(),
               ),
             ),
-
             const SizedBox(height: 12),
-
-            // EMAIL
             TextField(
               controller: emailC,
               enabled: false,
@@ -103,10 +97,7 @@ class _PenghuniPageState extends State<Profil> {
                 border: OutlineInputBorder(),
               ),
             ),
-
             const SizedBox(height: 12),
-
-            // PASSWORD
             TextField(
               controller: passC,
               obscureText: true,
@@ -116,10 +107,7 @@ class _PenghuniPageState extends State<Profil> {
                 border: OutlineInputBorder(),
               ),
             ),
-
             const SizedBox(height: 12),
-
-            // PHONE
             TextField(
               controller: phoneC,
               keyboardType: TextInputType.phone,
@@ -128,10 +116,7 @@ class _PenghuniPageState extends State<Profil> {
                 border: OutlineInputBorder(),
               ),
             ),
-
             const SizedBox(height: 30),
-
-            // SIMPAN
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange,
@@ -140,10 +125,7 @@ class _PenghuniPageState extends State<Profil> {
               onPressed: updateProfile,
               child: const Text('Simpan'),
             ),
-
             const SizedBox(height: 15),
-
-            // LOGOUT
             TextButton.icon(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
