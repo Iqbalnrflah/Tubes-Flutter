@@ -16,7 +16,6 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final pages = const [
     KosPage(),
-    KamarPage(),
     PenghuniPage(),
     PembayaranPage(),
   ];
@@ -26,13 +25,29 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       body: pages[index],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // WAJIB supaya warna muncul
         currentIndex: index,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Colors.orange,
         onTap: (i) => setState(() => index = i),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Kos'),
-          BottomNavigationBarItem(icon: Icon(Icons.meeting_room), label: 'Kamar'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Penghuni'),
-          BottomNavigationBarItem(icon: Icon(Icons.payments), label: 'Bayar'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Kos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.meeting_room),
+            label: 'Kamar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Penghuni',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.payments),
+            label: 'Bayar',
+          ),
         ],
       ),
     );

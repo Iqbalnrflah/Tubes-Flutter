@@ -1,6 +1,6 @@
 import 'auth/login_page.dart';
 import 'auth/register_page.dart';
-import 'dashboard/dashboard_page.dart';
+import 'dashboard/dashboard.dart';
 
 final routes = {
   '/login': (context) => const LoginPage(),

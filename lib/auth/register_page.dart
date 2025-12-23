@@ -23,18 +23,37 @@ class RegisterPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                final user = await FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(email: emailC.text, password: passC.text);
-
-                await FirebaseFirestore.instance
-                    .collection('pemilik_kos')
-                    .doc(user.user!.uid)
-                    .set({
-                  'nama': namaC.text,
-                  'email': emailC.text,
-                });
-
-                Navigator.pushReplacementNamed(context, '/dashboard');
+                try {
+                  final user = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                    email: emailC.text.trim(),
+                    password: passC.text.trim(),
+                  );
+              
+                  await FirebaseFirestore.instance
+                      .collection('pemilik_kos')
+                      .doc(user.user!.uid)
+                      .set({
+                    'nama': namaC.text,
+                    'email': emailC.text,
+                  });
+              
+                  Navigator.pushReplacementNamed(context, '/dashboard');
+                } on FirebaseAuthException catch (e) {
+                  String message = 'Terjadi kesalahan';
+              
+                  if (e.code == 'email-already-in-use') {
+                    message = 'Email sudah terdaftar';
+                  } else if (e.code == 'weak-password') {
+                    message = 'Password minimal 6 karakter';
+                  } else if (e.code == 'invalid-email') {
+                    message = 'Format email tidak valid';
+                  }
+              
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message)),
+                  );
+                }
               },
               child: const Text('Daftar'),
             ),
