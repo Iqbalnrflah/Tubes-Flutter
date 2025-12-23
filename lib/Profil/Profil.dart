@@ -58,18 +58,10 @@ class _PenghuniPageState extends State<Profil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Profil'),
-        leading: const BackButton(),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // AVATAR
             Stack(
               children: [
                 const CircleAvatar(

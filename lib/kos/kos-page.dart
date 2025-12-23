@@ -2,24 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../kamar/kamar-page.dart';
 
-class KosPage extends StatelessWidget {
+class KosPage extends StatefulWidget {
   const KosPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final namaC = TextEditingController();
-    final alamatC = TextEditingController();
+  State<KosPage> createState() => _KosPageState();
+}
 
+class _KosPageState extends State<KosPage> {
+  final TextEditingController namaC = TextEditingController();
+  final TextEditingController alamatC = TextEditingController();
+
+  @override
+  void dispose() {
+    namaC.dispose();
+    alamatC.dispose();
+    super.dispose();
+  }
+
+  Future<void> simpanKos() async {
+    if (namaC.text.isEmpty || alamatC.text.isEmpty) return;
+
+    try {
+      await FirebaseFirestore.instance.collection('kos').add({
+        'nama': namaC.text.trim(),
+        'alamat': alamatC.text.trim(),
+        'createdAt': Timestamp.now(),
+      });
+
+      namaC.clear();
+      alamatC.clear();
+
+      Navigator.pop(context);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Kos berhasil ditambahkan')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal menyimpan: $e')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Data Kos'),
-        backgroundColor: Colors.orange,
-      ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('kos').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('kos')
+            .orderBy('createdAt', descending: true)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text(snapshot.error.toString()));
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -29,7 +69,7 @@ class KosPage extends StatelessWidget {
           return ListView(
             children: snapshot.data!.docs.map((doc) {
               return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                margin: const EdgeInsets.all(8),
                 child: ListTile(
                   title: Text(doc['nama']),
                   subtitle: Text(doc['alamat']),
@@ -53,6 +93,7 @@ class KosPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
+        child: const Icon(Icons.add),
         onPressed: () {
           showDialog(
             context: context,
@@ -73,24 +114,13 @@ class KosPage extends StatelessWidget {
               ),
               actions: [
                 TextButton(
-                  onPressed: () async {
-                    if (namaC.text.isEmpty || alamatC.text.isEmpty) return;
-
-                    await FirebaseFirestore.instance.collection('kos').add({
-                      'nama': namaC.text,
-                      'alamat': alamatC.text,
-                      'createdAt': Timestamp.now(),
-                    });
-
-                    Navigator.pop(context);
-                  },
+                  onPressed: simpanKos,
                   child: const Text('Simpan'),
-                )
+                ),
               ],
             ),
           );
         },
-        child: const Icon(Icons.add),
       ),
     );
   }

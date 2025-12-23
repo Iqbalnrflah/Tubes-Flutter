@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'isi-penyewa-page.dart';
 
 class KamarPage extends StatelessWidget {
   final String kosId;
@@ -37,20 +38,76 @@ class KamarPage extends StatelessWidget {
 
           return ListView(
             children: snapshot.data!.docs.map((doc) {
+              final data = doc.data() as Map<String, dynamic>;
+
               return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                margin: const EdgeInsets.all(8),
                 child: ListTile(
-                  title: Text('Kamar ${doc['nomor']}'),
-                  subtitle: Text('Rp ${doc['harga']}'),
+                  title: Text('Kamar ${data['nomor']}'),
+                  subtitle: Text('Rp ${data['harga']}'),
                   trailing: Text(
-                    doc['status'],
+                    data['status'],
                     style: TextStyle(
-                      color: doc['status'] == 'Kosong'
+                      color: data['status'] == 'Kosong'
                           ? Colors.green
                           : Colors.red,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  onTap: () {
+                    /// =========================
+                    /// KAMAR KOSONG → ISI PENYEWA
+                    /// =========================
+                    if (data['status'] == 'Kosong') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => IsiPenyewaPage(
+                            kamarId: doc.id,
+                          ),
+                        ),
+                      );
+                    }
+
+                    /// =========================
+                    /// KAMAR TERISI → CHECKOUT
+                    /// =========================
+                    else {
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          title: const Text('Kosongkan Kamar'),
+                          content: const Text(
+                            'Apakah penyewa sudah keluar?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Batal'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await FirebaseFirestore.instance
+                                    .collection('kamar')
+                                    .doc(doc.id)
+                                    .update({
+                                  'status': 'Kosong',
+                                  'penyewa': FieldValue.delete(),
+                                  'tanggal_masuk': FieldValue.delete(),
+                                });
+
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                'Ya, Kosongkan',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
                 ),
               );
             }).toList(),
@@ -59,6 +116,7 @@ class KamarPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
+        child: const Icon(Icons.add),
         onPressed: () {
           showDialog(
             context: context,
@@ -69,12 +127,14 @@ class KamarPage extends StatelessWidget {
                 children: [
                   TextField(
                     controller: nomorC,
-                    decoration: const InputDecoration(labelText: 'Nomor Kamar'),
+                    decoration:
+                        const InputDecoration(labelText: 'Nomor Kamar'),
                   ),
                   TextField(
                     controller: hargaC,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Harga'),
+                    decoration:
+                        const InputDecoration(labelText: 'Harga'),
                   ),
                 ],
               ),
@@ -83,22 +143,25 @@ class KamarPage extends StatelessWidget {
                   onPressed: () async {
                     if (nomorC.text.isEmpty || hargaC.text.isEmpty) return;
 
-                    await FirebaseFirestore.instance.collection('kamar').add({
+                    await FirebaseFirestore.instance
+                        .collection('kamar')
+                        .add({
                       'nomor': nomorC.text,
                       'harga': int.parse(hargaC.text),
                       'status': 'Kosong',
-                      'kos_id': kosId, // ⬅️ PENTING
+                      'kos_id': kosId,
+                      'nama_kos': namaKos,
+                      'nama_kamar': 'Kamar ${nomorC.text}',
                     });
 
                     Navigator.pop(context);
                   },
                   child: const Text('Simpan'),
-                )
+                ),
               ],
             ),
           );
         },
-        child: const Icon(Icons.add),
       ),
     );
   }

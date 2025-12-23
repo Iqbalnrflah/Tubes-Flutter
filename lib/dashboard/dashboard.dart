@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import '../kos/kos-page.dart';
-import '../Profil/Profil.dart';
-import '../pembayaran/pembayaran-page.dart';
+import '../../kos/kos-page.dart';
+import '../../pembayaran/pembayaran-page.dart';
+import '../../history/history-page.dart';
+import '../../Profil/Profil.dart';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+  final VoidCallback toggleTheme;
+  const DashboardPage({super.key, required this.toggleTheme});
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -13,16 +15,30 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   int index = 0;
 
-  final pages = const [
-    KosPage(),
-    Profil(),
-    PembayaranPage(),
+  final pages = [
+    const KosPage(),
+    const PembayaranPage(),
+    HistoryPage(),
+    const Profil(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[index],
+      appBar: AppBar(
+        title: const Text('Dashboard'),
+        backgroundColor: Colors.orange,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.brightness_6),
+            onPressed: widget.toggleTheme,
+          ),
+        ],
+      ),
+      body: IndexedStack(
+        index: index,
+        children: pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: index,
@@ -47,7 +63,6 @@ class _DashboardPageState extends State<DashboardPage> {
             icon: Icon(Icons.people),
             label: 'Profil',
           ),
-          
         ],
       ),
     );
