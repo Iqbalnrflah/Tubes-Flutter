@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'kamar-service.dart';
 import 'isi-penyewa-page.dart';
 
-class KamarPage extends StatelessWidget {
+class KamarPage extends StatefulWidget {
   final String kosId;
   final String namaKos;
 
@@ -13,98 +13,88 @@ class KamarPage extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final nomorC = TextEditingController();
-    final hargaC = TextEditingController();
+  State<KamarPage> createState() => _KamarPageState();
+}
 
+class _KamarPageState extends State<KamarPage> {
+  late Future<List<dynamic>> kamarFuture;
+  final kamarC = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    kamarFuture = KamarService.getKamar(widget.kosId);
+  }
+
+  void refresh() {
+    setState(() {
+      kamarFuture = KamarService.getKamar(widget.kosId);
+    });
+  }
+
+  Future<void> simpanKamar() async {
+    if (kamarC.text.isEmpty) return;
+
+    await KamarService.tambahKamar(
+      kosId: widget.kosId,
+      namaKamar: kamarC.text.trim(),
+    );
+
+    kamarC.clear();
+    Navigator.pop(context);
+    refresh();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Kamar $namaKos'),
+        title: Text('Kamar - ${widget.namaKos}'),
         backgroundColor: Colors.orange,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('kamar')
-            .where('kos_id', isEqualTo: kosId)
-            .snapshots(),
+      body: FutureBuilder<List<dynamic>>(
+        future: kamarFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          final data = snapshot.data ?? [];
+
+          if (data.isEmpty) {
             return const Center(child: Text('Belum ada kamar'));
           }
 
-          return ListView(
-            children: snapshot.data!.docs.map((doc) {
-              final data = doc.data() as Map<String, dynamic>;
+          return ListView.builder(
+  itemCount: data.length,
+  itemBuilder: (context, i) {
+    final kamar = data[i];
+    final bool terisi = kamar['terisi'] == 1;
 
-              return Card(
-                margin: const EdgeInsets.all(8),
-                child: ListTile(
-                  title: Text('Kamar ${data['nomor']}'),
-                  subtitle: Text('Rp ${data['harga']}'),
-                  trailing: Text(
-                    data['status'],
-                    style: TextStyle(
-                      color: data['status'] == 'Kosong'
-                          ? Colors.green
-                          : Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onTap: () {
-                    if (data['status'] == 'Kosong') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => IsiPenyewaPage(
-                            kamarId: doc.id,
-                          ),
-                        ),
-                      );
-                    }
-                    else {
-                      showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: const Text('Kosongkan Kamar'),
-                          content: const Text(
-                            'Apakah penyewa sudah keluar?',
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Batal'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                await FirebaseFirestore.instance
-                                    .collection('kamar')
-                                    .doc(doc.id)
-                                    .update({
-                                  'status': 'Kosong',
-                                  'penyewa': FieldValue.delete(),
-                                  'tanggal_masuk': FieldValue.delete(),
-                                });
+    return ListTile(
+      title: Text(kamar['nama_kamar'] ?? '-'),
+      trailing: Chip(
+        label: Text(terisi ? 'Terisi' : 'Kosong'),
+        backgroundColor:
+            terisi ? Colors.red[200] : Colors.green[200],
+      ),
+      onTap: () {
+        if (!terisi) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => IsiPenyewaPage(
+                kamarId: kamar['id'].toString(),
+              ),
+            ),
+          ).then((_) => refresh());
+        }
+      },
+    ); // ✅ ListTile
+  },
+); // ✅ ListView.builder
 
-                                Navigator.pop(context);
-                              },
-                              child: const Text(
-                                'Ya, Kosongkan',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  },
-                ),
-              );
-            }).toList(),
-          );
+
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -115,40 +105,14 @@ class KamarPage extends StatelessWidget {
             context: context,
             builder: (_) => AlertDialog(
               title: const Text('Tambah Kamar'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nomorC,
-                    decoration:
-                        const InputDecoration(labelText: 'Nomor Kamar'),
-                  ),
-                  TextField(
-                    controller: hargaC,
-                    keyboardType: TextInputType.number,
-                    decoration:
-                        const InputDecoration(labelText: 'Harga'),
-                  ),
-                ],
+              content: TextField(
+                controller: kamarC,
+                decoration:
+                    const InputDecoration(labelText: 'Nama Kamar'),
               ),
               actions: [
                 TextButton(
-                  onPressed: () async {
-                    if (nomorC.text.isEmpty || hargaC.text.isEmpty) return;
-
-                    await FirebaseFirestore.instance
-                        .collection('kamar')
-                        .add({
-                      'nomor': nomorC.text,
-                      'harga': int.parse(hargaC.text),
-                      'status': 'Kosong',
-                      'kos_id': kosId,
-                      'nama_kos': namaKos,
-                      'nama_kamar': 'Kamar ${nomorC.text}',
-                    });
-
-                    Navigator.pop(context);
-                  },
+                  onPressed: simpanKamar,
                   child: const Text('Simpan'),
                 ),
               ],

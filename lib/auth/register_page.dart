@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'auth-service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -10,78 +9,42 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final namaC = TextEditingController();
+  final nameC = TextEditingController();
   final emailC = TextEditingController();
   final passC = TextEditingController();
 
-  @override
-  void dispose() {
-    namaC.dispose();
-    emailC.dispose();
-    passC.dispose();
-    super.dispose();
-  }
+  bool loading = false;
 
-  Future<void> register(BuildContext context) async {
-    if (namaC.text.isEmpty ||
-        emailC.text.isEmpty ||
-        passC.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Semua field wajib diisi')),
-      );
-      return;
-    }
+  void handleRegister() async {
+    setState(() => loading = true);
 
-    try {
-      final userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailC.text.trim(),
-        password: passC.text.trim(),
-      );
-      await FirebaseFirestore.instance
-          .collection('pemilik_kos')
-          .doc(userCredential.user!.uid)
-          .set({
-        'nama': namaC.text.trim(),
-        'email': emailC.text.trim(),
-        'createdAt': Timestamp.now(),
-      });
+    final result = await AuthService.register(
+      nama:  nameC.text,
+      email: emailC.text,
+      password: passC.text,
+    );
 
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/dashboard');
-    } on FirebaseAuthException catch (e) {
-      String message = 'Terjadi kesalahan';
+    setState(() => loading = false);
 
-      if (e.code == 'email-already-in-use') {
-        message = 'Email sudah terdaftar';
-      } else if (e.code == 'weak-password') {
-        message = 'Password minimal 6 karakter';
-      } else if (e.code == 'invalid-email') {
-        message = 'Format email tidak valid';
-      } else if (e.code == 'network-request-failed') {
-        message = 'Periksa koneksi internet';
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Status ${result['status']}'),
+        content: Text(result['body'].toString()),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Daftar Pemilik Kos')),
+      appBar: AppBar(title: const Text('Register')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
-              controller: namaC,
+              controller: nameC,
               decoration: const InputDecoration(labelText: 'Nama'),
             ),
             TextField(
@@ -90,13 +53,15 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             TextField(
               controller: passC,
-              obscureText: true,
               decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => register(context),
-              child: const Text('Daftar'),
+              onPressed: loading ? null : handleRegister,
+              child: loading
+                  ? const CircularProgressIndicator()
+                  : const Text('Register'),
             ),
           ],
         ),

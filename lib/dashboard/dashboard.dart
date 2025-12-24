@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../kos/kos-page.dart';
-import '../../pembayaran/pembayaran-page.dart';
-import '../../Profil/Profil.dart';
+import '../kos/kos-page.dart';
+import '../pembayaran/pembayaran-page.dart';
+import '../Profil/Profil.dart';
 
 class DashboardPage extends StatefulWidget {
   final VoidCallback toggleTheme;
