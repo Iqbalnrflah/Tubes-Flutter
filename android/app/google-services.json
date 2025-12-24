@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "740837220576",
+    "project_id": "tubes-flutter-eeefb",
+    "storage_bucket": "tubes-flutter-eeefb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740837220576:android:0324225a36f73264ff3085",
+        "android_client_info": {
+          "package_name": "com.example.tubes_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNmt5TnA-dRutFq69J40WgERo4ZO2K_G4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740837220576:android:0f319918bf9616e0ff3085",
+        "android_client_info": {
+          "package_name": "kelola.tugas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNmt5TnA-dRutFq69J40WgERo4ZO2K_G4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
