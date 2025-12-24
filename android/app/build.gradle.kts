@@ -21,7 +21,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
 
-    namespace = "com.example.tubes_flutter"
+    namespace = "kelola.tugas"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -36,7 +36,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.tubes_flutter"
+        applicationId = "kelola.tugas"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
