@@ -33,14 +33,11 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     try {
-      // 🔐 Register Auth
       final userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailC.text.trim(),
         password: passC.text.trim(),
       );
-
-      // 🗄 Simpan ke Firestore
       await FirebaseFirestore.instance
           .collection('pemilik_kos')
           .doc(userCredential.user!.uid)
@@ -69,7 +66,6 @@ class _RegisterPageState extends State<RegisterPage> {
         SnackBar(content: Text(message)),
       );
     } catch (e) {
-      // 🔥 Error Firestore / lainnya
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
